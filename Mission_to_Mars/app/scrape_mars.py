@@ -121,24 +121,23 @@ def twitter_weather(browser):
     url = "https://twitter.com/marswxreport?lang=en"
     browser.visit(url)
 
+    # wait couple of seconds to load the page. Otherwise search for weather tweets returns null.
+    time.sleep(2)
+
     html = browser.html
     soup = bs(html, "html.parser")
-    time.sleep(5)
-
-    mars_weather = "InSight sol 448 (2020-02-29) low -94.1ºC (-137.3ºF) high -8.3ºC (17.0ºF)\nwinds from the SSW at 5.5 m/s (12.4 mph) gusting to 19.9 m/s (44.6 mph)\npressure at 6.30 hPa"
 
     # Find all elements that contain tweets    
-    # latest_tweets = soup.find_all('div', class_='css-901oao r-hkyrab r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0')
-    # print(latest_tweets)
+    latest_tweets = soup.find_all('div', class_='css-901oao r-hkyrab r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0')
     # # Retrieve all elements that contain news title in the specified range
     # # Look for entries that display weather related words to exclude non weather related tweets 
 
-    # for tweet in latest_tweets:
-    #     if 'sol' and 'pressure' in tweet.text:
-    #         mars_weather = tweet.text
-    #         break
-    #     else: 
-    #         pass
+    for tweet in latest_tweets:
+        if 'sol' and 'pressure' in tweet.text:
+            mars_weather = tweet.text
+            break
+        else: 
+            pass
     
     return mars_weather
 
